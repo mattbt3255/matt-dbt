@@ -1,2 +1,12 @@
+# source ~/dbt-env/bin/activate 
 name: 'jaffle_shop'
 profile: 'jaffle_shop'
+
+models:
+  jaffle_shop:
+    marts:
+      core:
+        +materialized: table
+        +schema: core
+    staging:
+      +materialized: ephemeral
