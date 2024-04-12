@@ -8,4 +8,5 @@ models:
         +materialized: table
         +schema: core
     staging:
-      +materialized: ephemeral
+      +materialized: view
+      +schema: staging
