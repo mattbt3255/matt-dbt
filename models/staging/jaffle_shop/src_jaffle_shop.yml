@@ -14,11 +14,11 @@ sources:
             tests:
               - unique
               - not_null
+
       - name: orders
         description: Raw orders data.
         loaded_at_field: _etl_loaded_at
-        freshness:
-          # If after 12 hours there is a max(_etl_loaded_at) greater than 12 hours old then it will display a warning.
+        freshness: # If after 12 hours there is a max(_etl_loaded_at) greater than 12 hours old then it will display a warning.
           warn_after: {count: 12, period: hour} 
           error_after: {count: 48, period: hour}
         columns:
