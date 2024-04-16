@@ -6,8 +6,12 @@
 with events as (
   select * from {{ source('snowplow', 'events') }}
 
+  where 
+  
+  {{ limit_data_in_dev('collector_tstamp') }}
+
   {% if is_incremental() %}
-  where collector_tstamp >= (select max(max_collector_tstamp) from {{ this }})
+  and collector_tstamp >= (select max(max_collector_tstamp) from {{ this }})
   {% endif %}
 ),
 

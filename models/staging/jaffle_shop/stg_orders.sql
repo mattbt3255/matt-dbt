@@ -5,3 +5,6 @@ select
   status
   
 from {{ source('jaffle_shop', 'orders') }}
+
+where {{ limit_data_in_dev('order_date', '7') }}
+
