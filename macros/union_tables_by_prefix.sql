@@ -6,6 +6,8 @@
     {% if not loop.first %}
       union all
     {% endif %}
+  
+  {% endfor %}
 
     select * from {{ table.database }}. {{ table.schema }}. {{ table.name }}
 
