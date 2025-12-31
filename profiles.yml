@@ -3,11 +3,11 @@ jaffle_shop:
   outputs:
     dev:
       type: duckdb
-      path: 'jaffle_shop.duckdb'
+      path: /Users/matt.brown/Documents/matt-dbt/duck_db/jaffle_shop.duckdb
       threads: 24
       schema: "{{ env_var('DBT_SCHEMA', 'dbt_matt') }}"
     prod:
       type: duckdb
-      path: 'jaffle_shop.duckdb'
+      path: /Users/matt.brown/Documents/matt-dbt/duck_db/jaffle_shop.duckdb
       threads: 24
       schema: dbt_prod
