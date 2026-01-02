@@ -1,6 +1,6 @@
 target/
 dbt_packages/
 logs/
-venv/
+dbt_env/
 .env
 jaffle_shop.duckdb
