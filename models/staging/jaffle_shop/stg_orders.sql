@@ -3,7 +3,7 @@
     materialized = 'incremental',
     unique_key = 'order_id',
     incremental_strategy = 'merge',
-    on_schema_change = 'fail'
+    on_schema_change = 'sync_all_columns'
   )
 }}
 
@@ -13,6 +13,7 @@ select
   user_id as customer_id,
   order_date,
   status,
+  warehouse_id,
 
   -- Derived Fields --
   status like '%pending%' as is_status_pending,

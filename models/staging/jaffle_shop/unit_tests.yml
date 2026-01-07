@@ -2,6 +2,9 @@ unit_tests:
   - name: test_order_status_cleanup
     description: Test my status case / when cleanup logic.
     model: stg_orders
+    overrides:
+      macros:
+        is_incremental: false
     given:
       - input: source('jaffle_shop', 'orders')
         rows:
@@ -21,6 +24,7 @@ unit_tests:
     model: stg_orders
     overrides:
       macros:
+        is_incremental: false
         dbt.current_timestamp: "date('2024-01-15')"
     given:
       - input: source('jaffle_shop', 'orders')
