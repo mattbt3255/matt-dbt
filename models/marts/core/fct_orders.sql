@@ -1,9 +1,13 @@
 with orders as (
-  select * from {{ref('stg_orders')}}
+  select * from {{ ref('stg_orders') }}
 ),
 
 payments as (
-  select * from {{ref('stg_payments')}}
+  select * from {{ ref('stg_payments') }}
+),
+
+orders_pivoted as (
+  select * from {{ ref('int_orders_pivoted') }}
 ),
 
 order_payments as (
@@ -21,10 +25,13 @@ final as (
     orders.order_id,
     orders.customer_id,
     orders.order_date,
-    order_payments.amount
+    order_payments.amount,
+    orders_pivoted.credit_card_amount,
+    orders_pivoted.gift_card_amount,
 
   from orders
   left join order_payments using (order_id)
-  )
+  left join orders_pivoted using (order_id)
+)
 
 select * from final
