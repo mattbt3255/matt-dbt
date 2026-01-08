@@ -30,8 +30,8 @@ final as (
     orders_pivoted.gift_card_amount,
 
   from orders
-  left join order_payments using (order_id)
-  left join orders_pivoted using (order_id)
+  left join order_payments on order_payments.order_id = orders.order_id
+  left join orders_pivoted on orders_pivoted.order_id = orders.order_id
 )
 
 select * from final
