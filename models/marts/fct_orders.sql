@@ -21,10 +21,14 @@ order_payments as (
 
 final as (
   select
+    -- Dimensions --
     {{ dbt_utils.generate_surrogate_key(['orders.order_id']) }} as id,
     orders.order_id,
     orders.customer_id,
+    orders.status,
     orders.order_date,
+
+    -- Measures --
     order_payments.amount,
     orders_pivoted.credit_card_amount,
     orders_pivoted.gift_card_amount,
