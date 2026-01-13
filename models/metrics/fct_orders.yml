@@ -1,109 +1,109 @@
-semantic_models:
-  - name: orders
-    defaults:
-      agg_time_dimension: order_date
-    description: Order fact table. This table’s grain is one row per order.
-    model: ref('fct_orders')
+# semantic_models:
+#   - name: orders
+#     defaults:
+#       agg_time_dimension: order_date
+#     description: Order fact table. This table’s grain is one row per order.
+#     model: ref('fct_orders')
 
-    entities:
-      - name: order_id
-        type: primary
+#     entities:
+#       - name: order_id
+#         type: primary
 
-      - name: customer
-        expr: customer_id
-        type: foreign
+#       - name: customer
+#         expr: customer_id
+#         type: foreign
 
-    dimensions:
-      - name: order_date
-        type: time
-        type_params:
-          time_granularity: day
+#     dimensions:
+#       - name: order_date
+#         type: time
+#         type_params:
+#           time_granularity: day
 
-      - name: status
-        type: categorical
-        type_params:
-          time_granularity: day          
+#       - name: status
+#         type: categorical
+#         type_params:
+#           time_granularity: day          
           
-    measures:
-      - name: order_total
-        description: The total amount for each order including taxes.
-        agg: sum
-        expr: amount
-        agg_time_dimension: order_date
+#     measures:
+#       - name: order_total
+#         description: The total amount for each order including taxes.
+#         agg: sum
+#         expr: amount
+#         agg_time_dimension: order_date
 
-      - name: order_count
-        description: The unique count of Order IDs.
-        expr: order_id
-        agg: count_distinct
+#       - name: order_count
+#         description: The unique count of Order IDs.
+#         expr: order_id
+#         agg: count_distinct
 
-      - name: customers_with_orders
-        description: Unique count of customers who placed an order.
-        agg: count_distinct
-        expr: customer_id
+#       - name: customers_with_orders
+#         description: Unique count of customers who placed an order.
+#         agg: count_distinct
+#         expr: customer_id
 
-      - name: order_value_p99
-        expr: amount
-        agg: percentile
-        agg_params:
-          percentile: 0.99
-          use_discrete_percentile: True
-          use_approximate_percentile: False
+#       - name: order_value_p99
+#         expr: amount
+#         agg: percentile
+#         agg_params:
+#           percentile: 0.99
+#           use_discrete_percentile: True
+#           use_approximate_percentile: False
 
-metrics: 
-  - name: order_total
-    description: "Sum of orders value."
-    type: simple
-    label: "Order Total"
-    type_params:
-      measure: order_total
+# metrics: 
+#   - name: order_total
+#     description: "Sum of orders value."
+#     type: simple
+#     label: "Order Total"
+#     type_params:
+#       measure: order_total
 
-  - name: "order_count"
-    description: "number of orders"
-    type: simple
-    label: "order_count"
-    type_params:
-      measure:
-        name: order_count
+#   - name: "order_count"
+#     description: "number of orders"
+#     type: simple
+#     label: "order_count"
+#     type_params:
+#       measure:
+#         name: order_count
 
-  - name: large_orders
-    description: "Count of orders with order total over 20."
-    type: simple
-    label: "Large Orders"
-    type_params:
-      measure:
-        name: order_count
-    filter: |
-      {{ Metric('order_total', group_by=['order_id']) }} >=  20
+#   - name: large_orders
+#     description: "Count of orders with order total over 20."
+#     type: simple
+#     label: "Large Orders"
+#     type_params:
+#       measure:
+#         name: order_count
+#     filter: |
+#       {{ Metric('order_total', group_by=['order_id']) }} >=  20
 
-  # Ratio type metric
-  - name: "avg_order_value"
-    label: "avg_order_value"
-    description: "average value of each order"
-    type: ratio
-    type_params:
-      numerator: 
-        name: order_total
-      denominator: 
-        name: order_count
+#   # Ratio type metric
+#   - name: "avg_order_value"
+#     label: "avg_order_value"
+#     description: "average value of each order"
+#     type: ratio
+#     type_params:
+#       numerator: 
+#         name: order_total
+#       denominator: 
+#         name: order_count
 
-  # Cumulative type metrics
-  - name: "cumulative_order_amount_mtd"
-    label: "cumulative_order_amount_mtd"
-    description: "The month to date value of all orders"
-    type: cumulative
-    type_params:
-      measure:
-        name: order_total
-      cumulative_type_params:
-        grain_to_date: month
+#   # Cumulative type metrics
+#   - name: "cumulative_order_amount_mtd"
+#     label: "cumulative_order_amount_mtd"
+#     description: "The month to date value of all orders"
+#     type: cumulative
+#     type_params:
+#       measure:
+#         name: order_total
+#       cumulative_type_params:
+#         grain_to_date: month
 
-  # Derived metric
-  - name: "pct_of_orders_that_are_large"
-    label: "pct_of_orders_that_are_large"
-    description: "percent of orders that are large"
-    type: derived
-    type_params:
-      expr: large_orders/order_count
-      metrics:
-        - name: large_orders
-        - name: order_count
+#   # Derived metric
+#   - name: "pct_of_orders_that_are_large"
+#     label: "pct_of_orders_that_are_large"
+#     description: "percent of orders that are large"
+#     type: derived
+#     type_params:
+#       expr: large_orders/order_count
+#       metrics:
+#         - name: large_orders
+#         - name: order_count
